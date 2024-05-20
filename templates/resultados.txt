@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados de Elecciones</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('https://www.uteq.edu.ec/assets/images/news/pagina/portada_409.jpg');
+            background-size: cover;
+            background-position: center;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        h1 {
+            color: white;
+            text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+            font-size: 34px;
+            opacity: 0;
+            animation: fadeInUp 1s forwards 0.5s;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .resultados-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-top: 20px;
+            opacity: 0;
+            animation: fadeInUp 1s forwards 0.7s;
+        }
+
+        .opcion {
+            margin: 20px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .opcion:hover {
+            transform: scale(1.05);
+        }
+
+        img {
+            width: 150px; /* Ajustado el tamaño de las imágenes */
+            height: 150px; /* Ajustado el tamaño de las imágenes */
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 8px;
+            opacity: 0.8;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .ganador {
+            border: 2px solid gold;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.9);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .ganador:hover {
+            transform: scale(1.05);
+        }
+
+        .votos {
+            font-size: 20px;
+            color: #333;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Resultados de Elecciones</h1>
+
+    <div class="resultados-container">
+        {% if mensaje %}
+            <p>{{ mensaje }}</p>
+        {% else %}
+            {% for resultado in resultados %}
+                <div class="opcion {% if resultado[0] == ganador %}ganador{% endif %}">
+                    <img src="{% if resultado[0] == 'presidente1' %}https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0Vk9yo8ini2pUkAkHpQDGawFe8fAaiiFETg&usqp=CAU{% elif resultado[0] == 'presidente2' %}https://www.uteq.edu.ec/assets/images/photos/img-aut-5991216.jpg{% elif resultado[0] == 'presidente3' %}https://www.uteq.edu.ec/assets/images/photos/img-aut-5999876.jpg{% elif resultado[0] == 'voto_nulo' %}https://gk.city/wp-content/uploads/2023/05/si-voto-nulo-fuera-candidato-seria-amenaza-para-dignidades-elecciones-calacali.jpg{% elif resultado[0] == 'voto_blanco' %}https://cdn.businessinsider.es/sites/navi.axelspringer.es/public/media/image/2023/05/voto-blanco-3036342.jpg?tf=3840x{% endif %}" alt="{{ resultado[0] }}">
+                    <p>{% if resultado[0] == 'presidente1' %}Dr. Byron Oviedo{% elif resultado[0] == 'presidente2' %}Dr. Eduardo Díaz{% elif resultado[0] == 'presidente3' %}Ing. Roberto Pico{% elif resultado[0] == 'voto_nulo' %}Voto Nulo{% elif resultado[0] == 'voto_blanco' %}Voto Blanco{% endif %}</p>
+                    <p class="votos">Votos: {{ resultado[1] }}</p>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</body>
+</html>

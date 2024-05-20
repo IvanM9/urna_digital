@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Votación</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('https://www.uteq.edu.ec/assets/images/news/pagina/portada_409.jpg');
+            background-size: cover;
+            background-position: center;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        h1 {
+            color: white;
+            text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+            font-size: 34px; /* Reducido el tamaño del texto */
+            opacity: 0;
+            animation: fadeInUp 1s forwards 0.5s;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .votacion-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            opacity: 0;
+            animation: fadeInUp 1s forwards 0.7s;
+        }
+
+        .presidenciales {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .presidenciales label {
+            text-align: center;
+            margin: 0 10px; /* Añadido margen entre las imágenes */
+        }
+
+        .otros {
+            display: flex;
+            justify-content: space-around; /* Cambiado a space-around para agregar espacio entre las imágenes */
+            width: 100%;
+        }
+
+        .otros label {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        img {
+            width: 180px; /* Reducido el tamaño de las imágenes */
+            height: 180px; /* Reducido el tamaño de las imágenes */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        p {
+            color: white;
+            font-size: 22px; /* Aumentado el tamaño del texto */
+            margin-bottom: 8px; /* Aumentado el margen inferior */
+            opacity: 0.8; /* Ajustada la opacidad */
+            font-weight: 700; /* Cambiada la fuente a una más fuerte */
+            font-family: 'Poppins', sans-serif; /* Cambiada la fuente */
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+            font-size: 18px; /* Reducido el tamaño del texto */
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Opciones de Votación</h1>
+
+    <form method="POST" action="{{ url_for('votacion') }}" class="votacion-form" id="votacion-form">
+        <div class="presidenciales">
+            <label>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0Vk9yo8ini2pUkAkHpQDGawFe8fAaiiFETg&usqp=CAU" alt="Dr. Byron Oviedo">
+                <p>Dr. Byron Oviedo PHD</p>
+                <button type="button" onclick="confirmarVoto('presidente1')">Votar</button>
+            </label>
+
+            <label>
+                <img src="https://www.uteq.edu.ec/assets/images/photos/img-aut-5991216.jpg" alt="Dr. Eduardo Díaz">
+                <p>Dr. Eduardo Díaz PhD.</p>
+                <button type="button" onclick="confirmarVoto('presidente2')">Votar</button>
+            </label>
+
+            <label>
+                <img src="https://www.uteq.edu.ec/assets/images/photos/img-aut-5999876.jpg" alt="Ing. Roberto Pico">
+                <p>Ing. Roberto Pico M.Sc.</p>
+                <button type="button" onclick="confirmarVoto('presidente3')">Votar</button>
+            </label>
+        </div>
+
+        <div class="otros">
+            <label>
+                <img src="https://gk.city/wp-content/uploads/2023/05/si-voto-nulo-fuera-candidato-seria-amenaza-para-dignidades-elecciones-calacali.jpg" alt="Voto Nulo">
+                <p>Voto Nulo</p>
+                <button type="button" onclick="confirmarVoto('voto_nulo')">Votar</button>
+            </label>
+
+            <label>
+                <img src="https://cdn.businessinsider.es/sites/navi.axelspringer.es/public/media/image/2023/05/voto-blanco-3036342.jpg?tf=3840x" alt="Voto Blanco">
+                <p>Voto Blanco</p>
+                <button type="button" onclick="confirmarVoto('voto_blanco')">Votar</button>
+            </label>
+        </div>
+    </form>
+
+    <script>
+        // Función para confirmar el voto
+        function confirmarVoto(opcion) {
+            // Muestra una ventana emergente (popup) con confirmación
+            var confirmacion = confirm("¿Está seguro de su voto?");
+            
+            // Si el usuario selecciona "Sí", se envía el formulario
+            if (confirmacion) {
+                // Agrega el valor de la opción seleccionada al formulario
+                document.getElementById("votacion-form").innerHTML += '<input type="hidden" name="opcion" value="' + opcion + '">';
+                // Envía el formulario
+                document.getElementById("votacion-form").submit();
+            }
+            // Si el usuario selecciona "No", no hace nada
+        }
+    </script>
+</body>
+</html>

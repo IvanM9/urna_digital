@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingreso para Estudiantes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('https://www.uteq.edu.ec/assets/images/news/pagina/portada_409.jpg');
+            background-size: cover;
+            background-position: center;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 400px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        h1,
+        p {
+            color: #333;
+            opacity: 0;
+            animation: fadeInUp 1s forwards 0.5s;
+            font-size: 24px;
+            text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        input {
+            width: calc(100% - 20px);
+            padding: 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 1px 1px 5px #888888;
+            box-sizing: border-box;
+            opacity: 0;
+            animation: fadeInUp 1s forwards 0.7s;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+            opacity: 0;
+            animation: fadeInUp 1s forwards 0.9s;
+            font-size: 18px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .show {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Ingreso para Estudiantes</h1>
+        <form method="POST" action="/login_estudiantes">
+            <input type="text" name="cedula" placeholder="Cédula" required><br>
+            <input type="password" name="clave_unica" placeholder="Clave Única" required><br> <!-- Nuevo campo para la clave única -->
+            <button type="submit">Continuar</button>
+        </form>
+        {% if mensaje_error %}
+        <p>{{ mensaje_error }}</p>
+        {% endif %}
+        <a href="{{ url_for('mostrar_resultados') }}">
+            <button class="show">Ver resultados en tiempo real</button>
+        </a>
+    </div>
+</body>
+
+</html>

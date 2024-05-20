@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Votación</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        #backgroundImage {
+            position: fixed;
+            /* Cambiado de absolute a fixed */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Cambiado de 100vh a 100% */
+            background-image: url('https://www.uteq.edu.ec/assets/images/news/pagina/portada_409.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            z-index: -1;
+        }
+
+        .container-fluid {
+            max-height: 100%;
+            /* Cambiado de 100vh a 100% */
+            overflow-y: auto;
+            position: relative;
+            /* Añadido para que el contenido se desplace sobre la imagen de fondo */
+            z-index: 1;
+            /* Añadido para que el contenido se desplace sobre la imagen de fondo */
+            margin-bottom: 20px;
+            /* Añadido margen inferior */
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            color: white;
+            text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+            font-size: 34px;
+            /* Reducido el tamaño del texto */
+            opacity: 0;
+            animation: fadeInUp 1s forwards 0.5s;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .votacion-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            opacity: 0;
+            animation: fadeInUp 1s forwards 0.7s;
+        }
+
+        .presidenciales {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .presidenciales label {
+            text-align: center;
+            margin: 0 10px;
+            /* Añadido margen entre las imágenes */
+        }
+
+        .otros {
+            display: flex;
+            justify-content: space-around;
+            /* Cambiado a space-around para agregar espacio entre las imágenes */
+            width: 100%;
+        }
+
+        .otros label {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        img {
+            width: 180px;
+            /* Reducido el tamaño de las imágenes */
+            height: 180px;
+            /* Reducido el tamaño de las imágenes */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        p {
+            color: white;
+            font-size: 22px;
+            /* Aumentado el tamaño del texto */
+            margin-bottom: 8px;
+            /* Aumentado el margen inferior */
+            opacity: 0.8;
+            /* Ajustada la opacidad */
+            font-weight: 700;
+            /* Cambiada la fuente a una más fuerte */
+            font-family: 'Poppins', sans-serif;
+            /* Cambiada la fuente */
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+            font-size: 18px;
+            /* Reducido el tamaño del texto */
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="backgroundImage">
+    </div>
+    <div class="d-flex justify-content-between mt-1">
+        <h1 style="text-align: center;" class="mx-2">Opciones de Votación</h1>
+        <button class="btn btn-secondary mx-2" onclick="volver()">Volver al inicio de sesión</button>
+    </div>
+
+    <div class="container-fluid" style="width: 100vw;">
+        <form method="POST" action="{{ url_for('votacion') }}" id="votacion-form">
+            <div class="row mb-2 d-flex justify-content-center">
+                {% for element in opciones %}
+                <div class="col-3 mb-2">
+                    <div class="card">
+                        <img class="card-img"
+                            src="{{ element.imagen if element.imagen else 'static/img/CandidatoAvtr.png' }}"
+                            alt="{{element.opcion}}">
+                        <div class="card-body">
+                            <p class="card-title text-center">{{element.opcion}}</p>
+                            <div class="d-flex justify-content-center">
+                                <button class="card-button " type="button"
+                                    onclick="confirmarVoto('{{element.id}}')">Votar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="row">
+                <div class="col">-</div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Función para confirmar el voto
+        function confirmarVoto(opcion) {
+            // Muestra una ventana emergente (popup) con confirmación
+            var confirmacion = confirm("¿Está seguro de su voto?");
+
+            // Si el usuario selecciona "Sí", se envía el formulario
+            if (confirmacion) {
+                // Agrega el valor de la opción seleccionada al formulario
+                document.getElementById("votacion-form").innerHTML += '<input type="hidden" name="opcion" value="' + opcion + '">';
+                // Envía el formulario
+                document.getElementById("votacion-form").submit();
+            }
+            // Si el usuario selecciona "No", no hace nada
+        }
+
+        function volver() {
+            window.location.href = "/login_estudiantes";
+        }
+    </script>
+
+</body>
+
+</html>
